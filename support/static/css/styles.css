@@ -8,8 +8,6 @@ body {
     outline: 1px solid lightgreen;
     box-sizing: border-box;
     display: block;
-
-    /* background-color: violet; */
 }
 .container {
     outline: 1px solid tomato;
@@ -26,7 +24,7 @@ body {
 .main-title {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
+
     align-items: center;
     width: 1160px;
     height: 712px;
@@ -34,14 +32,12 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: 50%;
-    /* padding: -20px; */
+
     margin: 0;
 
 }
 
 header {
-    /* background-color: #333; */
-    /* color: #fff; */
     height: 304px;
     padding-top: 28px;
     padding-bottom: 38px;
@@ -51,14 +47,6 @@ h1 {
     margin: 0;
     padding: 0;
 }
-
-main {
-    /* padding: 20px; */
-}
-
-/* section {
-    margin-bottom: 40px;
-} */
 
 h2 {
     color: #333;
@@ -75,14 +63,6 @@ footer {
     text-align: center;
 }
 
-/* Rectangle 7
 
-position: absolute;
-width: 660px;
-height: 381px;
-left: 260px;
-top: 1141px;
-
-background: url(07.jpg); */
 
 

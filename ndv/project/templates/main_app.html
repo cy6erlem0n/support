@@ -1,0 +1,80 @@
+<!-- {% load static %} -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Домашняя поддержка компьютеров</title>
+    <script src="https://unpkg.com/vue@3.4.30/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <section class="container">
+        <header>
+            <nav class="navigation">
+                <img src="#" />
+                <div>
+                    8 (495) 156-39-11
+                </div>
+            </nav>
+
+            <!-- Навигационное меню может быть добавлено здесь -->
+        </header>
+        <!-- <h1>Add Sales Order</h1>
+        <div id="orders_app">
+            <form @submit.prevent="addOrder">
+                <label>
+                    Amount:
+                    <input type="number" v-model="newOrder.amount" required>
+                </label>
+                <br>
+                <label>
+                    Description:
+                    <input type="text" v-model="newOrder.description" required>
+                </label>
+                <br>
+                <button type="submit">Add Order</button>
+            </form> -->
+        {% verbatim %}
+        <div id="orders_app">
+            <li v-for="order in orders" :key="order.id">
+                {{ order.amount }} - {{ order.description }}
+            </li>
+        </div>
+        {% endverbatim %}
+        <script src="/static/app.js"></script>
+        <main>
+            <section class="main-title">
+                <h1>Приветствие</h1>
+                <p>Добро пожаловать на наш сайт! Мы готовы помочь вам с любыми проблемами, связанными с вашими домашними
+                    компьютерами и ноутбуками.</p>
+                <p>Свяжитесь с нами, чтобы получить быструю и профессиональную поддержку!</p>
+            </section>
+            <section>
+                <h2>Наши услугиЭто набор тех уникальных «признаков», по которым клиент отличит вас от других компаний.
+                    Фирменный стиль отражает миссию бренда, ценности, является способом его идентификации, формирует
+                    определённое восприятие в коммуникации с потребителями.
+
+                    В идеале разработка корпоративного стиля должна происходить одновременно с созданием бизнеса и
+                    формированием его фундаментальных идей. Есть и второй вариант: бизнес существует определенное время
+                    и ему нужен перезапуск - это называется редизайн или ребрендинг: в мире жёсткой конкуренции важно
+                    быть «в тренде», успевать за изменениями в поведениях покупателя и “говорить” с ним на одном языке.
+                </h2>
+                <!-- Здесь можно добавить краткое описание услуг, предоставляемых компанией -->
+            </section>
+            <section>
+                <h2>Контакты</h2>
+                <!-- Здесь можно добавить контактную информацию компании -->
+            </section>
+        </main>
+        <footer>
+            <!-- Здесь можно разместить информацию о копирайте и ссылки на социальные сети -->
+        </footer>
+        <!-- Подключение скриптов здесь -->
+    </section>
+
+</body>
+
+</html>
