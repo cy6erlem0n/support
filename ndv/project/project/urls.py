@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from orders.views import orders_page, orders_app, OrderView
+from orders.views import orders_app, OrderView
 from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
