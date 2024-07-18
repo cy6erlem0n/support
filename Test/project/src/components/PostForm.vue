@@ -1,26 +1,22 @@
 <template>
 <form @submit.prevent>
     <h4>Created post</h4>
-    <input 
-        v-bind:value="post.title" 
-        class="input"
-        @input="post.title = $event.target.value" 
+    <my-input 
+        v-model="post.title"
         type="text" 
         placeholder="Name"
-    >
-    <input 
-        v-bind:value="post.body"
-        @input="post.body = $event.target.value"  
-        class="input" 
+    />
+    <my-input 
+        v-model="post.body"
         type="text" 
         placeholder="About"
-    > 
-    <button 
-        class="btn"
+    /> 
+    <my-button 
+        style="align-self: flex-end; margin-top: 15px;"
         @click="createPost"
     > 
         Created
-    </button>
+    </my-button>
 </form>
 </template>
 
@@ -53,18 +49,5 @@ form {
     display:flex;
     flex-direction: column;
 }
-.input {
-    width: 100%;
-    border: 1px solid teal;
-    padding: 10px 15px;
-    margin-top: 15px;
-}
-.btn {
-    margin-top: 15px;
-    align-self: flex-end;
-    padding: 10px 15px;
-    background: none;
-    color: teal;
-    border: 1px solid teal;
-}
+
 </style>
