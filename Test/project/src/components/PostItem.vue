@@ -5,7 +5,11 @@
             <div><strong>About:</strong> {{ post.body }}</div>
         </div>
         <div class="post__btns">
-            <my-button>delete</my-button>
+            <my-button
+                @click="$emit('remove', post)"
+            >
+                delete
+            </my-button>
         </div>
     </div>
 </template>
