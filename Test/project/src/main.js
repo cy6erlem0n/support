@@ -3,6 +3,7 @@ import App from './App';
 import components from '@/components/UI';
 import router from '@/components/router/router.js';
 import directives from '@/directives';
+import store from '@/store';
 
 const app = createApp(App)
 
@@ -16,4 +17,5 @@ directives.forEach(directive => {
 
 app
     .use(router)
+    .use(store)
     .mount('#app')
