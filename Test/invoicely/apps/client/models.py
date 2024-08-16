@@ -3,7 +3,7 @@ from django.db import models
 
 class Client(models.Model):
     name = models.CharField(max_length=255)
-    email = models.EmailField()
+    email = models.EmailField(max_length=255)
     org_number = models.CharField(max_length=255, blank=True, null=True)
     address1 = models.CharField(max_length=255, blank=True, null=True)
     address2 = models.CharField(max_length=255, blank=True, null=True)
