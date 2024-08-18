@@ -1,8 +1,25 @@
 from rest_framework import serializers
 from .models import Invoice, Item
 
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        read_only_fields = (
+            "invoice",
+        )
+        fields = (
+            "id", 
+            "title",
+            'quantity', 
+            "unit_price", 
+            "net_amount", 
+            "vat_rate", 
+            "discount", 
+        )
+
 class InvoiceSerializer(serializers.ModelSerializer):
-    client = serializers.StringRelatedField()
+    items = ItemSerializer(many=True)
+    bankaccount = serializers.CharField(required=False)
     class Meta:
         model = Invoice
         read_only_fields = (
@@ -32,23 +49,16 @@ class InvoiceSerializer(serializers.ModelSerializer):
             "due_days",
             "is_sent",
             "is_paid",
+            "bankaccount",
             "gross_amount", 
             "vat_amount",
             "net_amount", 
             "discount_amount",
+            "items",
         )
-class ItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Item
-        read_only_fields = (
-            "invoice",
-        )
-        fields = (
-            "invoice", 
-            "title",
-            'quantity', 
-            "unit_price", 
-            "net_amount", 
-            "vat_rate", 
-            "discount", 
-        )
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        invoice = Invoice.objects.create(**validated_data)
+        for item in items_data:
+            Item.objects.create(invoice=invoice, **item)
+        return invoice

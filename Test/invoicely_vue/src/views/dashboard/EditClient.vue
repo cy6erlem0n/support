@@ -70,7 +70,8 @@ export default {
     name: 'EditClient',
     data() {
         return {
-            client: {}            
+            client: {},
+            errors: []            
         }
     },
     mounted() {

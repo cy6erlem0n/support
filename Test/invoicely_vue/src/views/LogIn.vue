@@ -35,7 +35,8 @@
                     </div>
 
                 </form>
-
+                <hr>
+                <router-link to="/sign-up">Click here</router-link> to sign up!
             </div>
         </div>
     </div>
@@ -54,21 +55,20 @@ import axios from "axios"
         }
     },
     methods: {
-        submitForm(e) {
+        async submitForm(e) {
             axios.defaults.headers.common["Authorization"] = ""
             localStorage.removeItem("token")
             const formData = {
                 username: this.username,
                 password: this.password
             }
-            axios 
+            await axios 
                 .post("/api/v1/token/login", formData)
                 .then(response => {
                     const token = response.data.auth_token
                     this.$store.commit('setToken', token)
                     axios.defaults.headers.common["Authorization"] = "Token " + token
                     localStorage.setItem("token", token)
-                    this.$router.push('/dashboard')
                 })
                 .catch(error => {
                     if (error.response) {
@@ -81,6 +81,16 @@ import axios from "axios"
                     } else {
                         console.log(JSON.stringify(error))
                     }
+                })
+            axios  
+                .get("/api/v1/users/me")
+                .then(response => {
+                    this.$store.commit('setUser', {'username' : response.data.username, 'id' : response.data.id})
+                    localStorage.setItem('username', response.data.username)
+                    localStorage.setItem('userid', response.data.id)
+                    this.$router.push('/dashboard')
+                }).catch(error => {
+                    console.log(JSON.stringify(error))
                 })
         }
     }

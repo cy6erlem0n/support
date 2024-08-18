@@ -70,7 +70,8 @@ export default {
     name: 'AddClient',
     data() {
         return {
-            client: {}            
+            client: {},
+            errors: []            
         }
     },
     mounted() {

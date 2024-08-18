@@ -1,7 +1,15 @@
-from .serializers import InvoiceSerializer, ItemSerializer
-from .models import Invoice, Item
-from rest_framework import viewsets
+import pdfkit
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.template.loader import get_template
+from rest_framework import viewsets
+from rest_framework import status, authentication, permissions
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.response import Response 
+from .serializers import InvoiceSerializer
+from .models import Invoice
+from apps.team.models import Team
 
 class InvoiceViewSet(viewsets.ModelViewSet):
     serializer_class = InvoiceSerializer
@@ -12,7 +20,10 @@ class InvoiceViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         team = self.request.user.teams.first()
-        serializer.save(created_by=self.request.user, team = team)
+        invoice_number = team.first_invoice_number
+        team.first_invoice_number = invoice_number + 1
+        team.save()
+        serializer.save(created_by=self.request.user, team = team, modified_by=self.request.user, invoice_number=invoice_number, bankaccount=team.bankaccount)
 
     def perform_update(self, serializer):
         obj = self.get_object()
@@ -20,12 +31,19 @@ class InvoiceViewSet(viewsets.ModelViewSet):
             raise PermissionDenied('Wrong object owner')
         serializer.save()
 
-class ItemViewSet(viewsets.ModelViewSet):
-    serializer_class = ItemSerializer
-    queryset = Item.objects.all()
+@api_view(['GET'])
+@authentication_classes([authentication.TokenAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+def generate_pdf(request, invoice_id):
+    invoice = get_object_or_404(Invoice, pk=invoice_id, created_by=request.user)
+    team = Team.objects.filter(created_by=request.user).first()
+    template = get_template('pdf.html')
+    html = template.render({'invoice': invoice, 'team': team})
+    path_wkhtmltopdf = r'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'
+    config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+    pdf = pdfkit.from_string(html, False, configuration=config)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content_Disposition'] = 'attachment; filename="invoice.pdf"'
+    return response
 
-    def get_queryset(self):
-        invoice_id = self.request.GET.get('invoice_id', 0)
-        return self.queryset.filter(invoice_id = invoice_id)
-    
     

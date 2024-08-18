@@ -24,9 +24,8 @@ export default {
     name: 'Client',
     data() {
         return {
-            client: {
-
-            }
+            client: {},
+            errors: []
         }
     },
     mounted() {
