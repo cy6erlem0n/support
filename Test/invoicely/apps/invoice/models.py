@@ -28,6 +28,7 @@ class Invoice(models.Model):
     invoice_type = models.CharField(max_length=20, choices=CHOICES_TYPE, default=INVOICE)
     due_days = models.IntegerField(default=14)
     is_credit_for = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True)
+    is_credited = models.BooleanField(default=False)
     is_sent = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
     bankaccount = models.CharField(max_length=255, blank=True, null=True)
@@ -47,6 +48,9 @@ class Invoice(models.Model):
     
     def get_due_date(self):
         return self.created_at + timedelta(days=self.due_days)
+    
+    def get_due_date_formatted(self):
+        return self.get_due_date().strftime("%d.%m.%Y")
 
 class Item(models.Model):
     invoice = models.ForeignKey(Invoice, related_name='items', on_delete=models.CASCADE)

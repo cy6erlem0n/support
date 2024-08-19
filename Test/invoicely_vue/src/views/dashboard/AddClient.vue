@@ -1,5 +1,12 @@
 <template>
     <div class="page-add-clients">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><router-link to="/dashboard">Dashboard</router-link></li>
+                <li><router-link to="/dashboard/clients">Clients</router-link></li>
+                <li class="is-active"><router-link to="/dashboard/clients/add" aria-current="true">Add</router-link></li>
+            </ul>
+        </nav>
         <div class="columns is-multiline">
             <div class="column is-12">
                 <h1 class="title">Add client</h1>
@@ -70,7 +77,15 @@ export default {
     name: 'AddClient',
     data() {
         return {
-            client: {},
+            client: {
+                name: '',
+                email: '',
+                address1: '',
+                address2: '',
+                zipcode: '',
+                place: '',
+                country: ''
+            },
             errors: []            
         }
     },
@@ -93,8 +108,30 @@ export default {
                 this.$router.push('/dashboard/clients')
             })
             .catch(error => {
-                    console.log(JSON.stringify(error))
-            })
+                if (error.response) {
+                    if (error.response.status === 400) {
+                        this.errors = error.response.data;
+                        toast({
+                            message: 'Failed to add client. Please check the input data.',
+                            type: 'is-danger',
+                            dismissible: true,
+                            pauseOnHover: true,
+                            duration: 3000,
+                            position: 'bottom-right'
+                        });
+                    }
+                } else {
+                    console.error(error);
+                    toast({
+                        message: 'An unexpected error occurred.',
+                        type: 'is-danger',
+                        dismissible: true,
+                        pauseOnHover: true,
+                        duration: 3000,
+                        position: 'bottom-right'
+                    });
+                }
+            });
         }
     }
 }  

@@ -18,7 +18,7 @@ class ItemSerializer(serializers.ModelSerializer):
         )
 
 class InvoiceSerializer(serializers.ModelSerializer):
-    items = ItemSerializer(many=True)
+    items = ItemSerializer(many=True, required = False)
     bankaccount = serializers.CharField(required=False)
     class Meta:
         model = Invoice
@@ -55,6 +55,9 @@ class InvoiceSerializer(serializers.ModelSerializer):
             "net_amount", 
             "discount_amount",
             "items",
+            "get_due_date_formatted",
+            "is_credit_for",
+            "is_credited",
         )
     def create(self, validated_data):
         items_data = validated_data.pop('items')
@@ -62,3 +65,21 @@ class InvoiceSerializer(serializers.ModelSerializer):
         for item in items_data:
             Item.objects.create(invoice=invoice, **item)
         return invoice
+
+    def update(self, instance, validated_data):
+        items_data = validated_data.pop('items', None)
+        
+        # Обновляем основные поля
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        
+        # Обновляем связанные объекты
+        if items_data is not None:
+            # Удаляем старые items (если это необходимо)
+            instance.items.all().delete()
+            # Создаем новые items
+            for item_data in items_data:
+                Item.objects.create(invoice=instance, **item_data)
+        
+        return instance

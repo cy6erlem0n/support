@@ -1,5 +1,12 @@
 <template>
     <div class="page-add-clients">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><router-link to="/dashboard">Dashboard</router-link></li>
+                <li><router-link to="/dashboard/invoices">Invoices</router-link></li>
+                <li class="is-active"><router-link to="/dashboard/invoices/add" aria-current="true">Add</router-link></li>
+            </ul>
+        </nav>
         <div class="columns is-multiline">
             <div class="column is-12">
                 <h1 class="title">Add invoices</h1>
@@ -21,8 +28,8 @@
                 <div class="box mt-4" v-if="invoice.client">
                     <p><strong>{{ invoice.client.name }}</strong></p>
                     <p><strong>Email:</strong>{{ invoice.client.email }}</p>
-                    <p v-if="invoice.client.adress1">{{ invoice.client.adress1 }}</p>
-                    <p v-if="invoice.client.adress2">{{ invoice.client.adress2 }}</p>
+                    <p v-if="invoice.client.address1">{{ invoice.client.address1 }}</p>
+                    <p v-if="invoice.client.address2">{{ invoice.client.address2 }}</p>
                     <p v-if="invoice.client.zipcode || invoice.client.place">{{ invoice.client.zipcode }} {{ invoice.client.place }}</p>
                     <p v-if="invoice.client.country">{{ invoice.client.country }}</p>
                 </div>
@@ -45,11 +52,8 @@
                             <input type="number" class="input" v-model="invoice.due_days">
                         </div>
                 </div>
-            </div>
-            <div class="column is-12">
-                <h2 class="is-size-5 mb-4">Sender reference</h2>
                 <div class="field">
-                        <label>Due days</label>
+                        <label>Sender reference</label>
                         <div class="control">
                             <input type="text" class="input" v-model="invoice.sender_reference">
                         </div>
